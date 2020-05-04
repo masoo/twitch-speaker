@@ -50,9 +50,11 @@ class Irc
 
   def on_message
     @irc.on_message do |message|
-      @speaker.write(from: message.from, message: message.body)
-      if !(message.from.include? "tmi.twitch.tv") and !(message.body.nil?)
-        @speaker.speak(message.body.force_encoding("UTF-8"))
+      if !(message.nil?) && !(message.from.nil?) && !(message.body.nil?)
+        @speaker.write(from: message.from, message: message.body)
+        if !(message.from.include? "tmi.twitch.tv")
+          @speaker.speak(message.body.force_encoding("UTF-8"))
+        end
       end
     end
   end
@@ -66,7 +68,7 @@ class Irc
   end
 end
 
-twitch_username = "107steps"
+twitch_username = ENV.fetch("TWITCH_USERNAME")
 twitch_token = ENV.fetch("TWITCH_OAUTH_TOKEN")
 aws_region = ENV.fetch("AWS_REGION", "ap-northeast-1")
 aws_access_key_id = ENV.fetch("AWS_ACCESS_KEY_ID")
