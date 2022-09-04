@@ -27,6 +27,7 @@ class Speaker
   end
 
   private
+
   def speaking_command
     "./mpg123.exe -q -"
   end
@@ -50,7 +51,7 @@ class Irc
 
   def on_message
     @irc.on_message do |message|
-      if !(message.nil?) && !(message.from.nil?) && !(message.body.nil?)
+      if !message.nil? && !message.from.nil? && !message.body.nil?
         @speaker.write(from: message.from, message: message.body)
         if !(message.from.include? "tmi.twitch.tv")
           @speaker.speak(message.body.force_encoding("UTF-8"))
