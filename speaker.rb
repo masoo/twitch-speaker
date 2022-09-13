@@ -1,37 +1,6 @@
-require "open3"
 require "dotenv/load"
-require "aws-sdk-polly"
 require "zircon"
-
-class Speaker
-  def initialize(region:, access_key_id:, secret_access_key:)
-    @client = Aws::Polly::Client.new(
-      region: region,
-      access_key_id: access_key_id,
-      secret_access_key: secret_access_key
-    )
-  end
-
-  def speak(message)
-    response = @client.synthesize_speech({
-      output_format: "mp3",
-      text_type: "text",
-      voice_id: "Mizuki",
-      text: message
-    })
-    Open3.capture3(speaking_command, stdin_data: response.audio_stream)
-  end
-
-  def write(from:, message:)
-    puts "#{from} >> #{message}"
-  end
-
-  private
-
-  def speaking_command
-    "./mpg123.exe -q -"
-  end
-end
+require_relative "./lib/speaker"
 
 class Irc
   def initialize(twitch_username:, twitch_token:, aws_region:, aws_access_key_id:, aws_secret_access_key:)
@@ -42,7 +11,8 @@ class Irc
       username: twitch_username,
       password: twitch_token
     )
-    @speaker = Speaker.new(
+    @speaker = Speaker.new
+    @speaker.aws_activate(
       region: aws_region,
       access_key_id: aws_access_key_id,
       secret_access_key: aws_secret_access_key
@@ -52,9 +22,10 @@ class Irc
   def on_message
     @irc.on_message do |message|
       if !message.nil? && !message.from.nil? && !message.body.nil?
-        @speaker.write(from: message.from, message: message.body)
+        message_body = message.body.force_encoding("UTF-8")
+        @speaker.write(from: message.from, message: message_body)
         if !(message.from.include? "tmi.twitch.tv")
-          @speaker.speak(message.body.force_encoding("UTF-8"))
+          @speaker.vocalize(message_body)
         end
       end
     end
