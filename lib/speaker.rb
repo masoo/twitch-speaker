@@ -3,7 +3,7 @@ require_relative "./mp3players/mpg123"
 
 # Class to speak voice.
 class Speaker
-  PATH="./vendor/mpg123.exe"
+  PATH = "./vendor/mpg123.exe"
 
   # activate voice for AWS Polly
   def aws_activate(region:, access_key_id:, secret_access_key:)
@@ -24,6 +24,9 @@ class Speaker
       text: message
     })
     @player.play(stdin_data: response.audio_stream)
+    true
+  rescue
+    false
   end
 
   # output console message

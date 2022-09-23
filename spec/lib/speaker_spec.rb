@@ -1,6 +1,7 @@
 require_relative "../../lib/speaker"
 require "debug"
 
+# Mock Class
 class MockAWSPollyClient
   class Response
     def audio_stream
@@ -18,7 +19,7 @@ RSpec.describe Speaker do
     speaker = Speaker.new
     expect(speaker.aws_activate(region: "hoge", access_key_id: "hoge", secret_access_key: "hoge")).to be_truthy
   end
-  
+
   it "#vocalize is success." do
     allow(Aws::Polly::Client).to receive(:new).and_return(MockAWSPollyClient.new)
     allow(Open3).to receive(:capture3).and_return(true)
