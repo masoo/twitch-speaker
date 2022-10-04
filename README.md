@@ -4,7 +4,7 @@ this program read aloud twitch chat.
 
 ## Install
 ```
-rake install
+rake install  # or "make install"
 ```
 
 so, [mpg123 windows version](https://www.mpg123.org/download.shtml)
