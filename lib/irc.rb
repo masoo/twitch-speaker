@@ -1,8 +1,10 @@
 require "zircon"
 require_relative "./speaker"
 
+# Class to Irc for Twitch
 class Irc
-  def initialize(twitch_username:, twitch_token:, aws_region:, aws_access_key_id:, aws_secret_access_key:)
+  # activate Twitch and AWS.
+  def activate(twitch_username:, twitch_token:, aws_region:, aws_access_key_id:, aws_secret_access_key:)
     @irc = Zircon.new(
       server: "irc.chat.twitch.tv",
       port: "6667",
@@ -18,7 +20,8 @@ class Irc
     )
   end
 
-  def on_message
+  # stream messages to TTY.
+  def stream_messages
     @irc.on_message do |message|
       if !message.nil? && !message.from.nil? && !message.body.nil?
         message_body = message.body.force_encoding("UTF-8")
@@ -30,10 +33,12 @@ class Irc
     end
   end
 
+  # run irc.
   def run!
     @irc.run!
   end
 
+  # quit irc.
   def quit
     @irc.quit
   end
