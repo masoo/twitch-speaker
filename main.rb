@@ -1,4 +1,3 @@
-require "dotenv/load"
 require_relative "./lib/irc"
 require_relative "./lib/settings"
 
