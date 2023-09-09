@@ -18,9 +18,10 @@ class Speaker
   # vocalize message
   def vocalize(message)
     response = @client.synthesize_speech({
+      engine: "neural",
       output_format: "mp3",
       text_type: "text",
-      voice_id: "Mizuki",
+      voice_id: "Kazuha",
       text: message
     })
     @player.play(stdin_data: response.audio_stream)
