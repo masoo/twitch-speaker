@@ -1,5 +1,5 @@
 require "aws-sdk-polly"
-require_relative "./mp3players/mpg123"
+require_relative "mp3players/mpg123"
 
 # Class to speak voice.
 class Speaker

@@ -1,5 +1,5 @@
 require "zircon"
-require_relative "./speaker"
+require_relative "speaker"
 
 # Class to Irc for Twitch
 class Irc

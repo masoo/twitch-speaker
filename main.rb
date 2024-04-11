@@ -1,5 +1,5 @@
-require_relative "./lib/irc"
-require_relative "./lib/settings"
+require_relative "lib/irc"
+require_relative "lib/settings"
 
 settings = Settings.new
 settings.load_json(path: "./settings.json")
